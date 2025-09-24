@@ -130,3 +130,57 @@ void Darken_and_Lighten(Image image) {
     }
     image.saveImage("hello_world.jpg");
 }
+void black_and_white(Image image) {
+    int black = 0, white = 255;
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            int R = image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            int gray =  0.3 * R + 0.6 * G + 0.1 * B;
+            if (gray >= 124) {
+                image.setPixel(i,j,0, white);
+                image.setPixel(i,j,1, white);
+                image.setPixel(i,j,2, white);
+            } else {
+                image.setPixel(i,j,0, black);
+                image.setPixel(i,j,1, black);
+                image.setPixel(i,j,2, black);
+            }
+        }
+    }
+    image.saveImage("test2.jpg");
+    cout<<"Black and white"<<endl;
+}
+
+void flip_horizontal(Image image) {
+    Image flipped_image(image.width, image.height);
+    for (int i = flipped_image.width; i >= 0; i--) {
+        for (int j = 0; j < flipped_image.height; j++) {
+            int R = image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            flipped_image.setPixel(flipped_image.width - i,j,0, R);
+            flipped_image.setPixel(flipped_image.width - i,j,1, G);
+            flipped_image.setPixel(flipped_image.width - i,j,2, B);
+        }
+    }
+    flipped_image.saveImage("test3.jpg");
+    cout<<"flip horizontally"<<endl;
+}
+
+void flip_vertical(Image image) {
+    Image flipped_image(image.width, image.height);
+    for (int i = 0; i < flipped_image.width; i++) {
+        for (int j = flipped_image.height; j >= 0; j--) {
+            int R = image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            flipped_image.setPixel(i, flipped_image.height - j,0, R);
+            flipped_image.setPixel(i, flipped_image.height - j,1, G);
+            flipped_image.setPixel(i, flipped_image.height - j,2, B);
+        }
+    }
+    flipped_image.saveImage("test4.jpg");
+    cout<<"flip vertically"<<endl;
+}
