@@ -79,3 +79,54 @@ void rotation(Image image) {
             break;
     }
 }
+#include "Image_Class.h"
+using namespace std;
+void grayscale(Image image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            int R =image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            int gray =  0.3 * R + 0.6 * G + 0.1 * B; //wikipedia colors ratio rounded
+            image.setPixel(i,j,0,gray);
+            image.setPixel(i,j,1,gray);
+            image.setPixel(i,j,2,gray);
+        }
+    }
+    image.saveImage("hello_world.jpg");
+    cout<<"grayscale"<<endl;
+};
+void Darken_and_Lighten(Image image) {
+    short response;
+    cout << "to increase type 1 and to decrease type 2 ";
+    cin >> response;
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            int R = image.getPixel(i, j, 0);
+            int G = image.getPixel(i, j, 1);
+            int B = image.getPixel(i, j, 2);
+            if (response == 1) {
+                if (R + .5 * R >= 255) R = 255;
+                else R = R + .5 * R;
+                if (G + .5 * G >= 255) G = 255;
+                else G = G + .5 * G;
+                if (B + .5 * B >= 255) B = 255;
+                else B = B + .5 * B;
+                image.setPixel(i, j, 0, R);
+                image.setPixel(i, j, 1, G);
+                image.setPixel(i, j, 2, B);
+            } else if (response == 2) {
+                if (R - .5 * R <= 0) R = 0;
+                else R = R - .5 * R;
+                if (G - .5 * G <= 0) G = 0;
+                else G = G - .5 * G;
+                if (B - .5 * B <= 0) B = 0;
+                else B = B - .5 * B;
+                image.setPixel(i, j, 0, R);
+                image.setPixel(i, j, 1, G);
+                image.setPixel(i, j, 2, B);
+            }
+        }
+    }
+    image.saveImage("hello_world.jpg");
+}
