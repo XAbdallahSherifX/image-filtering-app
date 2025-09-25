@@ -1,6 +1,6 @@
 #include "Image_Class.h"
 using namespace std;
-Image rotate90(Image image) {
+void rotate90(Image image) {
     Image rotatedImage(image.height,image.width);
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -12,10 +12,10 @@ Image rotate90(Image image) {
             rotatedImage.setPixel(rotatedImage.width-1-j,i,2,B);
         }
     }
+    rotatedImage.saveImage("hello_world.jpg");
     cout<<"rotated 90"<<endl;
-    return rotatedImage;
 }
-Image rotate180(Image image) {
+void rotate180(Image image) {
     Image rotatedImage(image.width, image.height);
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -27,10 +27,11 @@ Image rotate180(Image image) {
             rotatedImage.setPixel(image.width - i - 1, image.height - j - 1, 2, B);
         }
     }
+
+    rotatedImage.saveImage("hello_world.jpg");
     cout << "rotated 180" << endl;
-    return rotatedImage;
 }
-Image rotate270(Image image) {
+void rotate270(Image image) {
     Image rotatedImage(image.height, image.width);
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -42,10 +43,11 @@ Image rotate270(Image image) {
             rotatedImage.setPixel( j, rotatedImage.height - i - 1, 2, B);
         }
     }
+
+    rotatedImage.saveImage("hello_world.jpg");
     cout << "rotated 270" << endl;
-    return rotatedImage;
 }
-Image invertImage(Image image) {
+void invertImage(Image image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             int R = image.getPixel(i,j,0);
@@ -56,36 +58,30 @@ Image invertImage(Image image) {
             image.setPixel(i,j,2,255-B);
         }
     }
+    image.saveImage("hello_world.jpg");
     cout<<"inverted Image"<<endl;
-    return image;
 }
-Image rotate(Image image) {
-    Image rotated_image;
+void rotation(Image image) {
     int choice;
     cout << "Do you want to rotate this image with how many degrees?" << endl;
     cout << "1- 90 degrees"<<endl;
     cout << "2- 180 degrees"<<endl;
     cout << "3- 270 degrees"<<endl;
-    cout << "0- Back"<<endl;
     cin >> choice;
     switch (choice) {
         case 1:
-            rotated_image = rotate90(image);
+            rotate90(image);
             break;
         case 2:
-            rotated_image = rotate180(image);
+            rotate180(image);
             break;
-        case 3:
-            rotated_image = rotate270(image);
+        case 3: rotate270(image);
             break;
-        case 0:
-            return image;
-        default:
-            cout<<"Invalid Input Try Again."<<endl;
     }
-    return rotated_image;
 }
-Image grayscale(Image image) {
+#include "Image_Class.h"
+using namespace std;
+void grayscale(Image image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             int R =image.getPixel(i,j,0);
@@ -97,69 +93,44 @@ Image grayscale(Image image) {
             image.setPixel(i,j,2,gray);
         }
     }
+    image.saveImage("hello_world.jpg");
     cout<<"grayscale"<<endl;
-    return image;
-}
-Image dark(Image image) {
+};
+void Darken_and_Lighten(Image image) {
+    short response;
+    cout << "to increase type 1 and to decrease type 2 ";
+    cin >> response;
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             int R = image.getPixel(i, j, 0);
             int G = image.getPixel(i, j, 1);
             int B = image.getPixel(i, j, 2);
-            if (R - .5 * R <= 0) R = 0;
-            else R = R - .5 * R;
-            if (G - .5 * G <= 0) G = 0;
-            else G = G - .5 * G;
-            if (B - .5 * B <= 0) B = 0;
-            else B = B - .5 * B;
-            image.setPixel(i, j, 0, R);
-            image.setPixel(i, j, 1, G);
-            image.setPixel(i, j, 2, B);
+            if (response == 1) {
+                if (R + .5 * R >= 255) R = 255;
+                else R = R + .5 * R;
+                if (G + .5 * G >= 255) G = 255;
+                else G = G + .5 * G;
+                if (B + .5 * B >= 255) B = 255;
+                else B = B + .5 * B;
+                image.setPixel(i, j, 0, R);
+                image.setPixel(i, j, 1, G);
+                image.setPixel(i, j, 2, B);
+            } else if (response == 2) {
+                if (R - .5 * R <= 0) R = 0;
+                else R = R - .5 * R;
+                if (G - .5 * G <= 0) G = 0;
+                else G = G - .5 * G;
+                if (B - .5 * B <= 0) B = 0;
+                else B = B - .5 * B;
+                image.setPixel(i, j, 0, R);
+                image.setPixel(i, j, 1, G);
+                image.setPixel(i, j, 2, B);
+            }
         }
     }
-    return image;
+    image.saveImage("hello_world.jpg");
 }
-Image light(Image image) {
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            int R = image.getPixel(i, j, 0);
-            int G = image.getPixel(i, j, 1);
-            int B = image.getPixel(i, j, 2);
-            if (R + .5 * R >= 255) R = 255;
-            else R = R + .5 * R;
-            if (G + .5 * G >= 255) G = 255;
-            else G = G + .5 * G;
-            if (B + .5 * B >= 255) B = 255;
-            else B = B + .5 * B;
-            image.setPixel(i, j, 0, R);
-            image.setPixel(i, j, 1, G);
-            image.setPixel(i, j, 2, B);
-        }
-    }
-    return image;
-}
-Image brightness(Image image) {
-    Image new_image;
-    int choice;
-    cout << "1- Dark"<<endl;
-    cout << "2- Light"<<endl;
-    cout << "0- Back"<<endl;
-    cin >> choice;
-    switch (choice) {
-        case 1:
-            new_image = dark(image);
-            break;
-        case 2:
-            new_image = light(image);
-            break;
-        case 0:
-            return image;
-        default:
-            cout<<"Invalid Input Try Again."<<endl;
-    }
-    return new_image;
-}
-Image black_and_white(Image image) {
+void black_and_white(Image image) {
     int black = 0, white = 255;
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -178,12 +149,13 @@ Image black_and_white(Image image) {
             }
         }
     }
+    image.saveImage("test2.jpg");
     cout<<"Black and white"<<endl;
-    return image;
 }
-Image flip_horizontal(Image image) {
+
+void flip_horizontal(Image image) {
     Image flipped_image(image.width, image.height);
-    for (int i = 0; i < flipped_image.width; i++) {
+    for (int i = flipped_image.width; i >= 0; i--) {
         for (int j = 0; j < flipped_image.height; j++) {
             int R = image.getPixel(i,j,0);
             int G = image.getPixel(i,j,1);
@@ -193,101 +165,22 @@ Image flip_horizontal(Image image) {
             flipped_image.setPixel(flipped_image.width - i,j,2, B);
         }
     }
+    flipped_image.saveImage("test3.jpg");
     cout<<"flip horizontally"<<endl;
-    return flipped_image;
 }
-Image flip_vertical(const Image& image) {
+
+void flip_vertical(Image image) {
     Image flipped_image(image.width, image.height);
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            int R = image.getPixel(i, j, 0);
-            int G = image.getPixel(i, j, 1);
-            int B = image.getPixel(i, j, 2);
-            flipped_image.setPixel(i, image.height - 1 - j, 0, R);
-            flipped_image.setPixel(i, image.height - 1 - j, 1, G);
-            flipped_image.setPixel(i, image.height - 1 - j, 2, B);
+    for (int i = 0; i < flipped_image.width; i++) {
+        for (int j = flipped_image.height; j >= 0; j--) {
+            int R = image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            flipped_image.setPixel(i, flipped_image.height - j,0, R);
+            flipped_image.setPixel(i, flipped_image.height - j,1, G);
+            flipped_image.setPixel(i, flipped_image.height - j,2, B);
         }
     }
-    cout << "Flipped vertically" << endl;
-    return flipped_image;
-}
-Image flip(Image image) {
-    int choice;
-    Image flipped_image;
-    cout << "1- Flip Vertically."<<endl;
-    cout << "2- Flip Horizontally"<<endl;
-    cout << "0- Back"<<endl;
-    cin >> choice;
-    switch (choice) {
-        case 1:
-            flipped_image = flip_vertical(image);
-            break;
-        case 2:
-            flipped_image = flip_horizontal(image);
-            break;
-        case 0:
-            return image;
-        default:
-            cout<<"Invalid Input Try Again."<<endl;
-    }
-    return flipped_image;
-}
-int main() {
-    string image_name, saved_image_name;
-    int option;
-    Image image;
-    cout << "Load a new image: " << endl;
-    while (true) {
-        cin >> image_name;
-        try {
-            if (image.loadNewImage(image_name)) {
-                break;
-            }
-        }
-        catch (const exception& e) {
-            cout << "Load a new image: " << endl;
-        }
-    }
-    while (true) {
-        cout << "Choose A Filter :" << endl;
-        cout << "1. Grayscale Filter" << endl;
-        cout << "2. Black and White Filter" << endl;
-        cout << "3. Invert Image filter" << endl;
-        cout << "4. Flip Image" << endl;
-        cout << "5. Rotate Image" << endl;
-        cout << "6. Brightness Filter" << endl;
-        cout << "0. Save Image" << endl;
-        cout << "200. Exit" << endl;
-        cin >> option;
-        switch (option) {
-            case 1:
-                image = grayscale(image);
-                break;
-            case 2:
-                image = black_and_white(image);
-                break;
-            case 3:
-                image = invertImage(image);
-                break;
-            case 4:
-                image = flip(image);
-                break;
-            case 5:
-                image = rotate(image);
-                break;
-            case 6:
-                image = brightness(image);
-                break;
-            case 0:
-                cout << "Enter a name for the saved image: " << endl;
-                cin >> saved_image_name;
-                image.saveImage(saved_image_name);
-                cout<<"Image saved"<<endl;
-                break;
-            case 200:
-                return 0;
-            default:
-                cout<<"Invalid Input Try Again."<<endl;
-        }
-    }
+    flipped_image.saveImage("test4.jpg");
+    cout<<"flip vertically"<<endl;
 }
