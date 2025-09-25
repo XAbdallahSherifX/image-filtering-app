@@ -256,6 +256,7 @@ int main() {
         cout << "4. Flip Image" << endl;
         cout << "5. Rotate Image" << endl;
         cout << "6. Brightness Filter" << endl;
+        cout << "90.Load a new image:" << endl;
         cout << "0. Save Image" << endl;
         cout << "200. Exit" << endl;
         cin >> option;
@@ -278,13 +279,68 @@ int main() {
             case 6:
                 image = brightness(image);
                 break;
+            case 90:
+                cout << "load a new image;" << endl;
+                while (true) {
+                    cin >> image_name;
+                    try {
+                        if (image.loadNewImage(image_name)) {
+                            break;
+                        }
+                    }
+                    catch (const exception& e) {
+                        cout << "Load a new image: " << endl;
+                    }
+                }
+            break;
             case 0:
-                cout << "Enter a name for the saved image: " << endl;
-                cin >> saved_image_name;
-                image.saveImage(saved_image_name);
-                cout<<"Image saved"<<endl;
+                cout<<"1.save on same image"<<endl;
+                cout<<"2.save with a new name"<<endl;
+            cin >> option;
+            switch (option) {
+                case 1:
+                    image.saveImage(image_name);
+                break;
+                case 2:
+                    cout << "Enter a name for the saved image: " << endl;
+                while (true) {
+                    cin >> saved_image_name;
+                    try {
+                        if (image.saveImage(saved_image_name)) {
+                            break;
+                        }
+                    }
+                    catch (const exception& e) {
+                        cout << "Enter a valid extention " << endl;
+                    }
+                }
+                break;
+            }                cout<<"Image saved"<<endl;
                 break;
             case 200:
+                cout<<"do you want to save changes ?"<<endl;
+            cout<<"1. Save Image"<<endl;
+            cout<<"2. Exit"<<endl;
+            cin>> option;
+            switch (option) {
+                case 1:
+                    cout << "Enter a name for the saved image: " << endl;
+                while (true) {
+                    cin >> saved_image_name;
+                    try {
+                        if (image.saveImage(saved_image_name)) {
+                            break;
+                        }
+                    }
+                    catch (const exception& e) {
+                        cout << "Enter a valid extention " << endl;
+                    }
+                }
+
+                    cout<<"Image saved"<<endl;
+                break;
+            }
+            cout<<"Process finished"<<endl;
                 return 0;
             default:
                 cout<<"Invalid Input Try Again."<<endl;
