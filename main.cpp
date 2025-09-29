@@ -1,3 +1,9 @@
+//Name : Andro Hazem Samir     | Id : 20240093
+//Name : Hazem Hosny Hamed     | Id : 20240150
+//Name : Abdallah Sherif Sayed | Id : 20240327
+// Andro has done grayscale filter (filter 1) and brightness filter (filter 7).
+// Hazem has done black and white filter (filter 2) and flip filter (filter 5).
+// Abdallah has done invert filter (filter 3) and rotation filter (filter 6).
 #include "Image_Class.h"
 using namespace std;
 void rotate90(Image &image) {
@@ -7,9 +13,9 @@ void rotate90(Image &image) {
             int R = image.getPixel(i,j,0);
             int G = image.getPixel(i,j,1);
             int B = image.getPixel(i,j,2);
-            rotatedImage.setPixel(rotatedImage.width-1-j,i,0,R);
-            rotatedImage.setPixel(rotatedImage.width-1-j,i,1,G);
-            rotatedImage.setPixel(rotatedImage.width-1-j,i,2,B);
+            rotatedImage.setPixel(image.height-1-j,i,0,R);
+            rotatedImage.setPixel(image.height-1-j,i,1,G);
+            rotatedImage.setPixel(image.height-1-j,i,2,B);
         }
     }
     cout<<"rotated 90"<<endl;
@@ -37,30 +43,15 @@ void rotate270(Image &image) {
             int R = image.getPixel(i, j, 0);
             int G = image.getPixel(i, j, 1);
             int B = image.getPixel(i, j, 2);
-            rotatedImage.setPixel(j, rotatedImage.height - i - 1, 0, R);
-            rotatedImage.setPixel( j, rotatedImage.height - i - 1, 1, G);
-            rotatedImage.setPixel( j, rotatedImage.height - i - 1, 2, B);
+            rotatedImage.setPixel(j, image.width - i - 1, 0, R);
+            rotatedImage.setPixel( j, image.width - i - 1, 1, G);
+            rotatedImage.setPixel( j, image.width - i - 1, 2, B);
         }
     }
     cout << "rotated 270" << endl;
     image= rotatedImage;
 }
-void invertImage(Image &image) {
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            int R = image.getPixel(i,j,0);
-            int G = image.getPixel(i,j,1);
-            int B = image.getPixel(i,j,2);
-            image.setPixel(i,j,0,255-R);
-            image.setPixel(i,j,1,255-G);
-            image.setPixel(i,j,2,255-B);
-        }
-    }
-    cout<<"inverted Image"<<endl;
-
-}
 void rotate(Image &image) {
-
     int choice;
     cout << "Do you want to rotate this image with how many degrees?" << endl;
     cout << "1- 90 degrees"<<endl;
@@ -85,6 +76,20 @@ void rotate(Image &image) {
     }
 
 }
+void invertImage(Image &image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            int R = image.getPixel(i,j,0);
+            int G = image.getPixel(i,j,1);
+            int B = image.getPixel(i,j,2);
+            image.setPixel(i,j,0,255-R);
+            image.setPixel(i,j,1,255-G);
+            image.setPixel(i,j,2,255-B);
+        }
+    }
+    cout<<"inverted Image"<<endl;
+
+}
 void grayscale(Image &image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -98,7 +103,6 @@ void grayscale(Image &image) {
         }
     }
     cout<<"grayscale"<<endl;
-
 }
 void dark(Image &image) {
     for (int i = 0; i < image.width; i++) {
@@ -233,7 +237,7 @@ void flip(Image &image) {
     }
 }
 void load_new(string &image_name,Image &image) {
-    cout << "load a new image;" << endl;
+    cout << "load a new image:" << endl;
     while (true) {
         cin >> image_name;
         try {
@@ -246,8 +250,35 @@ void load_new(string &image_name,Image &image) {
         }
     }
 }
-int main() {
-    string image_name, saved_image_name;
+void save_new(Image &image ,string &image_name) {
+    string  saved_image_name;
+    int option;
+    cout<<"1.save on same image"<<endl;
+    cout<<"2.save with a new name"<<endl;
+    cin >> option;
+    switch (option) {
+        case 1:
+            image.saveImage(image_name);
+            break;
+        case 2:
+            cout << "Enter a name for the saved image: " << endl;
+            while (true) {
+                cin >> saved_image_name;
+                try {
+                    if (image.saveImage(saved_image_name)) {
+                        break;
+                    }
+                }
+                catch (const exception& e) {
+                    cout << "Enter a valid extention " << endl;
+                }
+            }
+            break;
+    }
+    cout<<"Image saved"<<endl;
+}
+void menu() {
+    string image_name;
     int option;
     Image image;
     load_new(image_name, image);
@@ -259,7 +290,7 @@ int main() {
         cout << "4. Flip Image" << endl;
         cout << "5. Rotate Image" << endl;
         cout << "6. Brightness Filter" << endl;
-        cout << "90.Load a new image:" << endl;
+        cout << "90.Load a new image" << endl;
         cout << "0. Save Image" << endl;
         cout << "200. Exit" << endl;
         cin >> option;
@@ -283,66 +314,32 @@ int main() {
                 brightness(image);
                 break;
             case 90:
-               load_new(image_name, image);
-            break;
+                load_new(image_name, image);
+                break;
             case 0:
-                cout<<"1.save on same image"<<endl;
-                cout<<"2.save with a new name"<<endl;
-            cin >> option;
-            switch (option) {
-                case 1:
-                    image.saveImage(image_name);
-                break;
-                case 2:
-                    cout << "Enter a name for the saved image: " << endl;
-                while (true) {
-                    cin >> saved_image_name;
-                    try {
-                        if (image.saveImage(saved_image_name)) {
-                            break;
-                        }
-                    }
-                    catch (const exception& e) {
-                        cout << "Enter a valid extention " << endl;
-                    }
-                }
-                break;
-            }                cout<<"Image saved"<<endl;
+                save_new(image,image_name);
                 break;
             case 200:
                 cout<<"do you want to save changes ?"<<endl;
-            cout<<"1. Save Image"<<endl;
-            cout<<"2. Exit"<<endl;
-            cin>> option;
-            switch (option) {
-                case 1:
-                    cout<<"1.save on same image"<<endl;
-                cout<<"2.save with a new name"<<endl;
-                cin >> option;
+                cout<<"1. Save Image"<<endl;
+                cout<<"2. Exit"<<endl;
+                cin>> option;
                 switch (option) {
                     case 1:
-                        image.saveImage(image_name);
-                    break;
+                        save_new(image,image_name);
+                        return;
                     case 2:
-                        cout << "Enter a name for the saved image: " << endl;
-                    while (true) {
-                        cin >> saved_image_name;
-                        try {
-                            if (image.saveImage(saved_image_name)) {
-                                break;
-                            }
-                        }
-                        catch (const exception& e) {
-                            cout << "Enter a valid extention " << endl;
-                        }
-                    }
-                    break;
-                }                cout<<"Image saved"<<endl;
-            }
-            cout<<"Process finished"<<endl;
-                return 0;
+                        cout<<"Process finished"<<endl;
+                        return;
+                    default:
+                        cout<<"Invalid Input Try Again."<<endl;
+                }
+                break;
             default:
                 cout<<"Invalid Input Try Again."<<endl;
         }
     }
+}
+int main() {
+    menu();
 }
